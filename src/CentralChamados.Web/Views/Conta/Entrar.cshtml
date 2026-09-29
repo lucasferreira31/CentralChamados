@@ -1,0 +1,10 @@
+@model LoginForm
+@{ ViewData["Title"] = "Entrar"; }
+<div class="auth"><p class="eyebrow">CENTRAL DE ATENDIMENTO</p><h1>Bem-vindo de volta</h1><p>Entre para acompanhar seus chamados.</p>
+<form asp-action="Entrar" method="post" class="painel formulario">
+<div asp-validation-summary="ModelOnly" role="alert"></div>
+<input asp-for="ReturnUrl" type="hidden" />
+<label asp-for="Email">E-mail</label><input asp-for="Email" type="email" autocomplete="username" aria-describedby="erro-email" /><span asp-validation-for="Email" id="erro-email"></span>
+<label asp-for="Senha">Senha</label><input asp-for="Senha" value="" type="password" autocomplete="current-password" aria-describedby="erro-senha" /><span asp-validation-for="Senha" id="erro-senha"></span>
+<button type="submit">Entrar</button>
+</form><p class="auth-link">Primeiro acesso? <a asp-action="Cadastrar">Criar conta</a></p></div>

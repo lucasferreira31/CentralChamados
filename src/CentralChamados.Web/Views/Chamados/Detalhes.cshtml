@@ -1,0 +1,38 @@
+@model DetalhesView
+@{ ViewData["Title"] = Model.Chamado.Resumo.Titulo; var c = Model.Chamado; var r = c.Resumo;
+var acao = Model.PodeIniciar ? "Iniciar" : Model.PodeResolver ? "Resolver" : Model.PodeReabrir ? "Reabrir" : null;
+}
+<a asp-action="Index">← Voltar aos chamados</a>
+<div class="titulo"><div><p class="eyebrow">CHAMADO @r.Id.ToString()[..8]</p><h1>@r.Titulo</h1></div><span class="status @r.Status">@(r.Status == StatusChamado.EmAtendimento ? "Em atendimento" : r.Status.ToString())</span></div>
+<div class="colunas"><section class="painel"><h2>Sobre o chamado</h2><p><span class="prioridade @r.Prioridade">Prioridade @r.Prioridade</span></p><p class="multilinha">@c.Descricao</p><dl><dt>Solicitante</dt><dd>@r.SolicitanteAtual</dd><dt>Técnico responsável</dt><dd>@(r.TecnicoAtual ?? "Ainda não atribuído")</dd></dl>
+@if(c.Solucao is not null) { <h3>Solução</h3><p class="multilinha">@c.Solucao</p> }
+</section>
+<section class="painel">
+<div asp-validation-summary="ModelOnly" role="alert"></div>
+@if(acao is not null)
+{
+<h2>@(acao == "Iniciar" ? "Iniciar atendimento" : acao == "Resolver" ? "Resolver chamado" : "Reabrir chamado")</h2>
+<form asp-action="@acao" asp-route-id="@r.Id" method="post" class="formulario">
+@if(acao != "Iniciar")
+{
+<label for="Texto">@(acao == "Resolver" ? "Solução aplicada" : "Motivo da reabertura")</label><textarea id="Texto" name="Texto" rows="4" maxlength="2000" aria-describedby="erro-texto">@Model.Acao.Texto</textarea>@Html.ValidationMessage("Texto", null, new { id = "erro-texto" })
+}
+else { <p>Ao assumir, você será o técnico responsável por este chamado.</p> }
+<button type="submit">@(acao == "Iniciar" ? "Assumir atendimento" : acao == "Resolver" ? "Registrar solução" : "Reabrir chamado")</button></form>
+}
+else
+{
+<h2>Acompanhamento</h2><p>@(r.Status == StatusChamado.Aberto ? "Aguardando um técnico assumir o atendimento." : r.Status == StatusChamado.EmAtendimento ? "O técnico responsável está atendendo esta solicitação." : "Atendimento concluído. O solicitante pode reabrir se o problema voltar.")</p>
+}
+</section></div>
+@if (Model.PodeComentar)
+{
+<section class="painel comentario"><h2>Adicionar comentário</h2><p>Compartilhe informações com o solicitante e o técnico responsável. O texto ficará no histórico.</p>
+<form asp-action="Comentar" asp-route-id="@r.Id" method="post" class="formulario">
+<label for="Comentario">Comentário</label><textarea id="Comentario" name="Comentario" rows="3" maxlength="2000" aria-describedby="erro-comentario">@Model.Comentario</textarea>
+@Html.ValidationMessage("Comentario", null, new { id = "erro-comentario" })
+<button type="submit">Enviar comentário</button></form></section>
+}
+<section class="painel historico"><h2>Histórico do atendimento</h2><ol>
+@foreach(var e in c.Historico) { <li><p class="multilinha">@e.Descricao</p><small>@e.Autor · <time datetime="@e.Em.ToString("O")">@e.Em.ToString("dd/MM/yyyy HH:mm") UTC</time></small></li> }
+</ol></section>

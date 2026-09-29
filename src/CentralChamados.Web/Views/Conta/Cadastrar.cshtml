@@ -1,0 +1,13 @@
+@model CadastroForm
+@{ ViewData["Title"] = "Criar conta"; }
+<div class="auth"><p class="eyebrow">COMECE POR AQUI</p><h1>Crie sua conta</h1><p>Abra solicitações e acompanhe o atendimento em um só lugar.</p>
+<form asp-action="Cadastrar" method="post" class="painel formulario">
+<div asp-validation-summary="ModelOnly" role="alert"></div>
+<label asp-for="Nome">Seu nome</label><input asp-for="Nome" maxlength="100" autocomplete="name" aria-describedby="erro-nome" /><span asp-validation-for="Nome" id="erro-nome"></span>
+<label asp-for="Email">E-mail</label><input asp-for="Email" type="email" maxlength="256" autocomplete="username" aria-describedby="erro-email" /><span asp-validation-for="Email" id="erro-email"></span>
+<label asp-for="Senha">Senha</label><input asp-for="Senha" value="" type="password" maxlength="128" autocomplete="new-password" aria-describedby="regra-senha erro-senha" />
+<p class="ajuda" id="regra-senha">Use entre 10 e 128 caracteres, com maiúscula, minúscula, número e símbolo.</p><span asp-validation-for="Senha" id="erro-senha"></span>
+<label asp-for="ConfirmarSenha">Confirmar senha</label><input asp-for="ConfirmarSenha" value="" type="password" maxlength="128" autocomplete="new-password" aria-describedby="erro-confirmacao" /><span asp-validation-for="ConfirmarSenha" id="erro-confirmacao"></span>
+<button type="submit">Criar conta</button>
+<p class="ajuda">Seu perfil inicial será Solicitante. O acesso de técnicos é concedido pelo responsável pela aplicação.</p>
+</form><p class="auth-link">Já possui uma conta? <a asp-action="Entrar">Entrar</a></p></div>

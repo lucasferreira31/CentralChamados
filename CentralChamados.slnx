@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/"><Project Path="src/CentralChamados.Domain/CentralChamados.Domain.csproj" />
+    <Project Path="src/CentralChamados.BancoDemo/CentralChamados.BancoDemo.csproj" /><Project Path="src/CentralChamados.Demo/CentralChamados.Demo.csproj" />
+    <Project Path="src/CentralChamados.Persistence/CentralChamados.Persistence.csproj" />
+    <Project Path="src/CentralChamados.Web/CentralChamados.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CentralChamados.Persistence.Tests/CentralChamados.Persistence.Tests.csproj" /><Project Path="tests/CentralChamados.Tests/CentralChamados.Tests.csproj" />
+    <Project Path="tests/CentralChamados.Web.Tests/CentralChamados.Web.Tests.csproj" />
+  </Folder>
+</Solution>

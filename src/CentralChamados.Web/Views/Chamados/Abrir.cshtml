@@ -1,0 +1,11 @@
+@model AberturaForm
+@{ ViewData["Title"] = "Abrir chamado"; }
+<a asp-action="Index">← Voltar aos chamados</a><h1>Abrir chamado</h1><p>Conte o que aconteceu. O chamado ficará vinculado à sua conta.</p>
+<form asp-action="Abrir" method="post" class="painel formulario">
+<div asp-validation-summary="ModelOnly" role="alert"></div>
+<label asp-for="Titulo">Título</label><input asp-for="Titulo" maxlength="100" aria-describedby="erro-titulo" /><span id="erro-titulo" asp-validation-for="Titulo"></span>
+<label asp-for="Descricao">Descrição do problema</label><textarea asp-for="Descricao" rows="5" maxlength="2000" aria-describedby="erro-descricao"></textarea><span id="erro-descricao" asp-validation-for="Descricao"></span>
+<label asp-for="Prioridade">Prioridade</label><select asp-for="Prioridade" asp-items="Html.GetEnumSelectList<PrioridadeChamado>()" aria-describedby="erro-prioridade"></select><span asp-validation-for="Prioridade" id="erro-prioridade"></span>
+<p class="ajuda">A prioridade organiza a fila; ela não define um prazo garantido de atendimento.</p>
+<button type="submit">Abrir chamado</button>
+</form>

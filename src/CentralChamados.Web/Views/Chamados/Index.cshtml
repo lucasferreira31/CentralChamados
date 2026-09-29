@@ -1,0 +1,43 @@
+@model ListaView
+@{
+var tecnico = User.IsInRole(Perfis.Tecnico);
+ViewData["Title"] = tecnico ? "Fila de atendimento" : "Meus chamados";
+var pagina = Model.Resultado;
+var filtro = pagina.Filtro;
+var contagens = pagina.Contagens;
+}
+<div class="titulo"><div><p class="eyebrow">CENTRAL DE ATENDIMENTO</p><h1>@ViewData["Title"]</h1><p>@(tecnico ? "Organize a fila e assuma os atendimentos disponíveis." : "Acompanhe as suas solicitações de atendimento.")</p></div><a class="botao" asp-action="Abrir">Abrir chamado</a></div>
+<form asp-action="Index" method="get" class="painel filtros" aria-label="Filtrar chamados">
+<div><label for="Busca">Buscar no título</label><input id="Busca" name="Busca" value="@filtro.Busca" maxlength="100" placeholder="Ex.: Impressora" /></div>
+<div><label for="Status">Status</label><select id="Status" name="Status"><option value="">Todos</option>@foreach(var status in Enum.GetValues<StatusChamado>()) { <option value="@status" selected="@(filtro.Status == status)">@(status == StatusChamado.EmAtendimento ? "Em atendimento" : status.ToString())</option> }</select></div>
+<div><label for="Prioridade">Prioridade</label><select id="Prioridade" name="Prioridade"><option value="">Todas</option>@foreach(var prioridade in Enum.GetValues<PrioridadeChamado>()) { <option value="@prioridade" selected="@(filtro.Prioridade == prioridade)">@prioridade</option> }</select></div>
+<div class="filtro-acoes"><button type="submit">Filtrar</button><a asp-action="Index">Limpar filtros</a></div>
+</form>
+<section aria-label="Resumo dos resultados filtrados">
+<p class="ajuda">Contagens de todos os resultados dos filtros atuais, respeitando seu acesso.</p>
+<div class="indicadores">
+<div class="painel"><span>Total</span><strong id="total-resultados">@contagens.Total</strong></div>
+<div class="painel"><span>Abertos</span><strong id="total-abertos">@contagens.Abertos</strong></div>
+<div class="painel"><span>Em atendimento</span><strong id="total-atendimento">@contagens.EmAtendimento</strong></div>
+<div class="painel"><span>Resolvidos</span><strong id="total-resolvidos">@contagens.Resolvidos</strong></div>
+</div></section>
+@if(pagina.Itens.Count == 0)
+{
+<section class="painel vazio"><h2>Nenhum chamado encontrado</h2><p>Confira os filtros ou abra uma nova solicitação.</p></section>
+}
+else
+{
+<p class="ajuda">Ordem: maior prioridade primeiro; depois, título. Até @ChamadosService.TamanhoPagina chamados por página.</p>
+<div class="cards">
+@foreach(var c in pagina.Itens)
+{
+<article class="painel" data-chamado="@c.Id"><div class="etiquetas"><span class="status @c.Status">@(c.Status == StatusChamado.EmAtendimento ? "Em atendimento" : c.Status.ToString())</span><span class="prioridade @c.Prioridade">@c.Prioridade</span></div>
+<h2><a asp-action="Detalhes" asp-route-id="@c.Id">@c.Titulo</a></h2><p>Solicitante: @c.SolicitanteAtual</p><p>Técnico: @(c.TecnicoAtual ?? "Ainda não atribuído")</p><a asp-action="Detalhes" asp-route-id="@c.Id">Ver atendimento →</a></article>
+}
+</div>
+<nav class="paginacao" aria-label="Paginação">
+@if(pagina.Pagina > 1) { <a asp-action="Index" asp-route-Busca="@filtro.Busca" asp-route-Status="@filtro.Status" asp-route-Prioridade="@filtro.Prioridade" asp-route-Pagina="@(pagina.Pagina - 1)">← Anterior</a> }
+<span aria-current="page">Página @pagina.Pagina de @pagina.TotalPaginas</span>
+@if(pagina.Pagina < pagina.TotalPaginas) { <a asp-action="Index" asp-route-Busca="@filtro.Busca" asp-route-Status="@filtro.Status" asp-route-Prioridade="@filtro.Prioridade" asp-route-Pagina="@(pagina.Pagina + 1)">Próxima →</a> }
+</nav>
+}

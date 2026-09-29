@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>@ViewData["Title"] · Central de Chamados</title>
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /></head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<header><nav aria-label="Navegação principal"><a class="marca" asp-action="Index" asp-controller="Chamados">◈ Central de Chamados</a><div class="nav-links">
+@if (User.Identity?.IsAuthenticated == true)
+{
+<a asp-action="Index" asp-controller="Chamados">@(User.IsInRole(Perfis.Tecnico) ? "Fila de atendimento" : "Meus chamados")</a>
+<form asp-action="Sair" asp-controller="Conta" method="post"><button class="sair" type="submit">Sair</button></form>
+}
+else
+{
+<a asp-action="Entrar" asp-controller="Conta">Entrar</a><a asp-action="Cadastrar" asp-controller="Conta">Criar conta</a>
+}
+</div></nav></header>
+<main id="conteudo">
+@if (User.Identity?.IsAuthenticated == true)
+{
+<p class="sessao">Conectado: @User.Identity.Name · @(User.IsInRole(Perfis.Tecnico) ? "Técnico" : "Solicitante")</p>
+}
+@if (TempData["Sucesso"] is string mensagem) { <p class="sucesso" role="status">@mensagem</p> }
+@RenderBody()
+</main>
+<footer>Central de Chamados · Projeto de estudo em ASP.NET Core MVC</footer>
+</body></html>
