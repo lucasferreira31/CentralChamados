@@ -28,8 +28,8 @@ Adicionar prioridade, filtros, paginação, comentários e painel com contagens 
 
 Critérios: filtros combinados retornam dados corretos; números do painel correspondem ao banco; comentários não permitem executar HTML/JavaScript arbitrário na página.
 
-## Etapa 6 — demonstração e publicação
+## Etapa 6 — demonstração e publicação (concluída)
 
-README com capturas de tela, CI confirmado, conta demonstrativa sem dados pessoais e roteiro de cinco minutos. Se houver hospedagem, preparar configuração de produção e persistência dos dados.
+README com captura de tela, roteiro de cinco minutos e perguntas de estudo. Código publicado no repositório público lucasferreira31/CentralChamados, com CI de build e testes em Windows e Linux. As contas para demonstração são criadas localmente, sem senhas padrão. Consulte a aba Actions para o resultado de cada revisão. A aplicação ainda não está hospedada; essa etapa exige configuração de produção e persistência dos dados.
 
 Não incluir anexos, envio de e-mail ou integrações externas antes de o fluxo principal funcionar e estar coberto por testes.
